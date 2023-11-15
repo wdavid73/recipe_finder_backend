@@ -1,0 +1,27 @@
+version: '1.0'
+
+services:
+  db:
+    image: postgres
+    enviromen:
+      - DB_NAME=
+      - DB_USER=
+      - DB_PASSWORD=
+  
+  web:
+    build: .
+    command: python manager.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    enviroment:
+      - DB_NAME=
+      - DB_USER=
+      - DB_PASSWORD=
+      - SERCRE_KEY=
+      - DEBUG=True
+    depends_on:
+      - db
+
+    
