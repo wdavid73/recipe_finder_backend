@@ -8,8 +8,8 @@ from rest_framework.authtoken.models import Token
 
 
 class LogoutAPI(APIView):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [permissions.AllowAny]
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request: Request) -> Response:
         try:
