@@ -33,7 +33,8 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
-    ]
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
 }
 
 MIDDLEWARE = [
@@ -77,10 +78,6 @@ WSGI_APPLICATION = 'recipe_finder.wsgi.application'
 DATABASES = {
    'default':  {
        'ENGINE': 'django.db.backends.postgresql',
-       # 'OPTIONS': {
-       #   'service': 'my_service',
-       #   'passfile': '.my_pgpass',
-       # }
        'NAME': config('DB_NAME'),
        'USER': config('DB_USER'),
        'PASSWORD': config('DB_PASSWORD'),
@@ -113,7 +110,7 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = 'static/'
-STATICFILES_DIR = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIR = (os.path.join(BASE_DIR, STATIC_URL),)
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
