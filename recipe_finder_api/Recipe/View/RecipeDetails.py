@@ -7,6 +7,7 @@ from recipe_finder.custom_permissions import TokenPermission
 
 from ..Model.ModelRecipe import Recipe
 from ..Serializer.SerializerRecipe import RecipeSerializer
+from recipe_finder_api.Step.Serializer.SerializerStep import StepSerializer
 
 
 @api_view(['GET'])
@@ -14,15 +15,17 @@ from ..Serializer.SerializerRecipe import RecipeSerializer
 def details_recipe(request: Request, id: int) -> Response:
     try:
         recipe = Recipe.objects.prefetch_related(
-            'ingredient').get(id=id, user=request.user)
+            'ingredient'
+        ).get(id=id, user=request.user)
     except Recipe.DoesNotExist:
         return Response({'error': 'Recipe not found'}, status=status.HTTP_404_NOT_FOUND)
-    serializer = RecipeSerializer(recipe)
-
+    serializer = RecipeSerializer(recipe, context={'request': request})
+    serializer_step = serializer.get_steps(recipe)
     return Response(
         {
             'recipe': serializer.data,
-            'ingredients': serializer.get_ingredients(recipe)
+            'ingredients': serializer.get_ingredients(recipe),
+            'steps': serializer_step,
         },
         status=status.HTTP_200_OK
     )

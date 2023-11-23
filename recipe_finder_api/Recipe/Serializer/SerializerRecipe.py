@@ -5,10 +5,23 @@ from .ExtraImageSerializer import ExtraImageSerializer
 from recipe_finder_api.models import CustomUser
 from recipe_finder_api.Category.Model.ModelCategory import Category
 from recipe_finder_api.Ingredient.Model.ModelIngredient import Ingredient
+from recipe_finder_api.Step.Model.ModelStep import Step, StepAction
 
 from recipe_finder_api.AuthUser.Serializer.UserSerializer import UserSerializer
 from recipe_finder_api.Category.Serializer.SerializerCategory import CategorySerializer
 from recipe_finder_api.Ingredient.Serializer.SerializerIngredient import IngredientSerializer
+
+class ReadStepActionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StepAction
+        fields = ['action']
+
+class ReadStepSerializer(serializers.ModelSerializer):
+    actions = ReadStepActionSerializer(many=True, read_only=True, source='stepaction_set')
+
+    class Meta:
+        model = Step
+        fields = ['name', 'actions']
 
 
 class RecipeSerializer(serializers.ModelSerializer):
@@ -43,13 +56,17 @@ class RecipeSerializer(serializers.ModelSerializer):
             'category', 'category_id',
             'user',
             'ingredients',
-            'extra_images'
+            'extra_images',
         ]
         
 
     def get_ingredients(self, obj):
         ingredients = obj.ingredient.all()
         return IngredientSerializer(ingredients, many=True).data
+    
+    def get_steps(self, obj):
+        steps = Step.objects.filter(recipe=obj)
+        return ReadStepSerializer(steps, many=True).data
     
     def update(self, instance, validated_data):
         ingredients_data = validated_data.pop('ingredients', [])
