@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from ..Model.ModelRecipe import Recipe, Recipe_Ingredient
+from .ExtraImageSerializer import ExtraImageSerializer
 
 from recipe_finder_api.models import CustomUser
 from recipe_finder_api.Category.Model.ModelCategory import Category
@@ -20,11 +21,6 @@ class RecipeSerializer(serializers.ModelSerializer):
     )
 
     user = UserSerializer(read_only=True)
-    user_id = serializers.PrimaryKeyRelatedField(
-        write_only=True,
-        queryset=CustomUser.objects.all(),
-        source='user'
-    )
 
     ingredients = serializers.PrimaryKeyRelatedField(
         write_only=True,
@@ -33,10 +29,22 @@ class RecipeSerializer(serializers.ModelSerializer):
         required=False
     )
 
+    extra_images = ExtraImageSerializer(many=True, read_only=True)
+
     class Meta:
         model = Recipe
-        fields = ['id', 'name', 'description', 'cooking_time', 'is_favorite',
-                  'main_picture', 'category', 'category_id', 'user', 'user_id', 'ingredients']
+        fields = [
+            'id',
+            'name',
+            'description',
+            'cooking_time',
+            'is_favorite',
+            'main_picture',
+            'category', 'category_id',
+            'user',
+            'ingredients',
+            'extra_images'
+        ]
         
 
     def get_ingredients(self, obj):

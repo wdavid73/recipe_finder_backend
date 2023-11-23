@@ -12,5 +12,4 @@ urlpatterns = [
     path("delete/<int:id>", delete_recipe, name="delete_recipe"),
     path("by_user/", GetRecipeByUser.as_view(), name="get_by_user"),
     path('details/<int:id>', details_recipe, name="details_recipe"),
-    path('optional_pictures/', include('recipe_finder_api.OptionalPicturesRecipe.urls')),
 ]

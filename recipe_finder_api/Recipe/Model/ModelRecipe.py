@@ -10,6 +10,9 @@ def namePicture(instance, filename):
     todays_date = date.today()
     return "/".join(["images", "recipes", "{}".format(todays_date.year), filename])
 
+def nameExtraPicture(instance, filename):
+    todays_date = date.today()
+    return "/".join(["images", "recipes", "extra_picture", "{}".format(todays_date.year), filename])
 
 class Recipe(models.Model):
     name = models.CharField(max_length=100, blank=False, null=False)
@@ -49,6 +52,10 @@ class Recipe_Ingredient(models.Model):
 
     class Meta:
         db_table = "Recipe_Ingredient"
+
+class ExtraImage(models.Model):
+    recipe = models.ForeignKey(Recipe, related_name="extra_pictures", on_delete=models.CASCADE)
+    picture = models.ImageField(upload_to=nameExtraPicture, null=True)
 
 
 """
