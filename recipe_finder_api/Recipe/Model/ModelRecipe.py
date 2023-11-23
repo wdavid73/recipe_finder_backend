@@ -1,5 +1,6 @@
 from datetime import date
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 from recipe_finder_api.Category.Model.ModelCategory import Category
 from recipe_finder_api.Ingredient.Model.ModelIngredient import Ingredient
 from recipe_finder_api.models import CustomUser
@@ -16,7 +17,8 @@ class Recipe(models.Model):
     cooking_time = models.IntegerField(blank=False, null=False)
     main_picture = models.ImageField(
         upload_to=namePicture, default='not_image.png', null=False)
-    ratings = models.DecimalField(null=True, blank=False, default=0.0, decimal_places=1, max_digits=1 )
+    ratings = models.DecimalField(null=True, blank=False, default=0.0, decimal_places=1, max_digits=2, validators=[
+                                  MinValueValidator(0.0), MaxValueValidator(5.0)])
     preparation_video = models.CharField(max_length=200, blank=True, null=True)
     is_favorite = models.BooleanField(default=False, null=False, blank=False)
     category = models.ForeignKey(

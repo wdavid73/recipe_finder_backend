@@ -35,19 +35,31 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = ['id', 'name', 'description', 'cooking_time',
+        fields = ['id', 'name', 'description', 'cooking_time', 'is_favorite',
                   'main_picture', 'category', 'category_id', 'user', 'user_id', 'ingredients']
         
 
     def get_ingredients(self, obj):
-        ingredients = Recipe_Ingredient.objects.filter(recipe=obj)
-        return SerializerRecipeIngredient(ingredients, many=True, context=self.context).data
+        ingredients = obj.ingredient.all()
+        return IngredientSerializer(ingredients, many=True).data
     
     def update(self, instance, validated_data):
         ingredients_data = validated_data.pop('ingredients', [])
         instance = super(RecipeSerializer, self).update(instance, validated_data)
         instance.ingredient.set(ingredients_data)
         return instance
+    
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        fields_to_include = set(self.context.get("fields", []))
+        fields_to_exclude = set(self.context.get("not_fields", []))
+        result = {}
+
+        for field_name, field_value in representation.items():
+            if (not fields_to_include or field_name in fields_to_include) and field_name not in fields_to_exclude:
+                result[field_name] = field_value
+        
+        return result
 
 
 class SerializerRecipeIngredient(serializers.ModelSerializer):
