@@ -14,14 +14,17 @@ class TokenPermission(permissions.BasePermission):
     message = "Authentication Token Invalid"
 
     def has_permission(self, request, view):
-        if 'Authorization' in request.headers:
-            AuthToken = request.META['HTTP_AUTHORIZATION'].split(" ")[1]
-            try:
-                Token.objects.get(key=AuthToken)
-                return True
-            except Token.DoesNotExist:
+        headers = request.headers
+        authorization_keys = ['authorization', 'Authorization']
+        for key in authorization_keys:
+            if key in headers:
+                AuthToken = headers[key].split(" ")[1]
+                try:
+                    Token.objects.get(key=AuthToken)
+                    return True
+                except Token.DoesNotExist:
+                    raise PermissionDenied(
+                        "Your supplied token does not exist", 401)
+            else:
                 raise PermissionDenied(
-                    "You dont have permission to this action", 401)
-        else:
-            raise PermissionDenied(
-                "You dont send Authorization in headers", 401)
+                    "You dont send Authorization in headers", 401)
