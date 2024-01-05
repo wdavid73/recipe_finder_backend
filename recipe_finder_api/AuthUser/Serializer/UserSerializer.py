@@ -24,7 +24,7 @@ class EmailBackend(ModelBackend):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ('username', 'email', 'name', 'profile_picture', 'birthday')
+        fields = ('id', 'username', 'email', 'name', 'profile_picture', 'birthday')
 
     def validate(self, data):
         username = data.get('username')
