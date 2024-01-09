@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+
+# Virtual Environment
+venv/
+env/
+
+# macOS
+.DS_Store
+
+# SQLite database files
+*.sqlite3
+
+# Log files
+*.log
+
+# Media files
+media/
+
+# Static files
+staticfiles/
+
+# Temporary files
+*.swp
+
+# Ignore local development settings
+local_settings.py
+
+# Ignore production settings
+production_settings.py
+
+# Ignore sensitive information
+secret_key.txt
+
+# Ignore IDE files
+.idea/
+
+# Ignore VS Code settings
+.vscode/
+
+# Ignore Python bytecode
+__pycache__/
+*.pyc
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore pycache directories
+__pycache__/
+
+# Ignore the Django migrations directory
+**/migrations/
