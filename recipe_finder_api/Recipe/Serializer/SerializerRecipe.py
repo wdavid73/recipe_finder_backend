@@ -2,7 +2,6 @@ from rest_framework import serializers
 from ..Model.ModelRecipe import Recipe, Recipe_Ingredient
 from .ExtraImageSerializer import ExtraImageSerializer
 
-from recipe_finder_api.models import CustomUser
 from recipe_finder_api.Category.Model.ModelCategory import Category
 from recipe_finder_api.Ingredient.Model.ModelIngredient import Ingredient
 from recipe_finder_api.Step.Model.ModelStep import Step, StepAction
@@ -85,7 +84,6 @@ class RecipeSerializer(serializers.ModelSerializer):
                 result[field_name] = field_value
         
         return result
-
 
 class SerializerRecipeIngredient(serializers.ModelSerializer):
     ingredient = IngredientSerializer(read_only=True)

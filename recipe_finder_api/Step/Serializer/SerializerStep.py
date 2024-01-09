@@ -15,7 +15,7 @@ class StepSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Step
-        fields = ['name', 'recipe', 'recipe_id']
+        fields = ['id', 'name', 'recipe', 'recipe_id']
 
     
     def to_representation(self, instance):
@@ -42,7 +42,7 @@ class StepActionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StepAction
-        fields = ['action', 'step', 'step_id']
+        fields = ['id', 'action', 'step', 'step_id']
 
     
     def to_representation(self, instance):
@@ -57,3 +57,15 @@ class StepActionSerializer(serializers.ModelSerializer):
         
         return result
 
+class CreateRecipeStepActionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StepAction
+        fields = ['action']
+        
+class RecipeStepSerializer(serializers.ModelSerializer):
+    actions = CreateRecipeStepActionSerializer(many=True)
+
+    class Meta:
+        model = Step
+        fields = ['name', 'actions']
+        

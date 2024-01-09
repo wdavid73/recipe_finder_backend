@@ -4,6 +4,7 @@ from .View.RecipePut import UpdateRecipe
 from .View.RecipeDelete import disable_recipe, delete_recipe
 from .View.RecipeByUser import GetRecipeByUser
 from .View.RecipeDetails import details_recipe
+from .View.GetRecipeAll import GetAllRecipe
 
 urlpatterns = [
     path("", GetAndPost.as_view(), name="get_and_post"),
@@ -12,4 +13,5 @@ urlpatterns = [
     path("delete/<int:id>", delete_recipe, name="delete_recipe"),
     path("by_user/", GetRecipeByUser.as_view(), name="get_by_user"),
     path('details/<int:id>', details_recipe, name="details_recipe"),
+    path('all', GetAllRecipe.as_view(), name="get_all"),
 ]
